@@ -48,7 +48,8 @@
     #if defined LINUX
         #include <libusb-1.0/libusb.h>
     #else
-        #error "Unknown OS"
+    #include <libusb.h>
+//#error "Unknown OS"
     #endif
 #endif
 #include <stdint.h>
@@ -336,7 +337,7 @@ int main( int argc, char *argv[] )
     ITMDecoderInit( &_r.i, options.forceITMSync );
 
     sockfd = socket( AF_INET, SOCK_STREAM, 0 );
-    setsockopt( sockfd, SOL_SOCKET, SO_REUSEPORT, &flag, sizeof( flag ) );
+    setsockopt( sockfd, SOL_SOCKET, SO_REUSEADDR, &flag, sizeof( flag ) );
 
     if ( sockfd < 0 )
     {

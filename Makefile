@@ -1,6 +1,6 @@
 #VERBOSE=1
 DEBUG=1
-WITH_FPGA?=1
+#WITH_FPGA?=1
 
 CFLAGS=-DVERSION="\"1.00\""
 
@@ -45,7 +45,8 @@ CFILES =
 SFILES =
 OLOC = ofiles
 INCLUDE_PATHS = -I/usr/local/include/libusb-1.0 -I/usr/include/libiberty
-LDLIBS = -L/usr/local/lib -lusb-1.0 -lelf -lbfd -lz -ldl -liberty
+INCLUDE_PATHS += -I/mingw64/include -I/mingw64/include/libusb-1.0 -I /mingw64/include/libiberty
+LDLIBS = -L/usr/lib -L/mingw64/lib -L/mingw64/lib/binutils -L/usr/local/lib -lusb-1.0 -lelf -lbfd -lz -ldl -liberty -lintl
 
 #ifdef LINUX
 LDLIBS += -lpthread

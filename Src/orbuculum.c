@@ -59,7 +59,10 @@
             #include <termios.h>
         #endif
     #else
-        #error "Unknown OS"
+    #include <sys/ioctl.h>
+    #include <libusb.h>
+    #include <termios.h>
+//        #error "Unknown OS"
     #endif
 #endif
 #include <stdint.h>
@@ -99,10 +102,10 @@
 #define SEGGER_PORT (2332)
 
 /* Descriptor information for BMP */
-#define VID       (0x1d50)
-#define PID       (0x6018)
-#define INTERFACE (5)
-#define ENDPOINT  (0x85)
+#define VID           (0x1d50)
+#define PID           (0x6018)
+#define SWO_INTERFACE (5)
+#define ENDPOINT      (0x85)
 
 #define TRANSFER_SIZE (4096)
 #define NUM_CHANNELS  32
@@ -533,7 +536,7 @@ static bool _makeServerTask( int port )
     int flag = 1;
 
     sockfd = socket( AF_INET, SOCK_STREAM, 0 );
-    setsockopt( sockfd, SOL_SOCKET, SO_REUSEPORT, &flag, sizeof( flag ) );
+    setsockopt( sockfd, SOL_SOCKET, SO_REUSEADDR, &flag, sizeof( flag ) );
 
     if ( sockfd < 0 )
     {
@@ -1290,7 +1293,7 @@ int usbFeeder( void )
             continue;
         }
 
-        if ( ( err = libusb_claim_interface ( handle, INTERFACE ) ) < 0 )
+        if ( ( err = libusb_claim_interface ( handle, SWO_INTERFACE ) ) < 0 )
         {
             genericsReport( V_ERROR, "Failed to claim interface (%d)" EOL, err );
             return 0;
@@ -1357,7 +1360,7 @@ int seggerFeeder( void )
     while ( 1 )
     {
         sockfd = socket( AF_INET, SOCK_STREAM, 0 );
-        setsockopt( sockfd, SOL_SOCKET, SO_REUSEPORT, &flag, sizeof( flag ) );
+        setsockopt( sockfd, SOL_SOCKET, SO_REUSEADDR, &flag, sizeof( flag ) );
 
         if ( sockfd < 0 )
         {
