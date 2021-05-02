@@ -220,7 +220,7 @@ int _processOptions( int argc, char *argv[] )
 {
     int c;
 
-    while ( ( c = getopt ( argc, argv, "hti:l:no:p:s:vw" ) ) != -1 )
+    while ( ( c = getopt ( argc, argv, "hti:l:no:p:s:v:w" ) ) != -1 )
         switch ( c )
         {
             case 'o':
